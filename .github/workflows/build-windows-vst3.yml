@@ -19,14 +19,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup MSVC and CMake
-        uses: microsoft/setup-msbuild@v1.1
+      - name: Setup MSVC developer environment
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure CMake
         run: |
           cmake -B build `
-            -G "Visual Studio 17 2022" `
-            -A x64 `
+            -G Ninja `
             -DCMAKE_BUILD_TYPE=Release
 
       - name: Build Release
