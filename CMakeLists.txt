@@ -36,6 +36,10 @@ target_sources(SalekHypercore PRIVATE
   Source/Engine/HyperSound.h
 )
 
+target_compile_definitions(SalekHypercore PRIVATE
+  JUCE_VST3_CAN_REPLACE_VST2=0
+)
+
 # Link JUCE
 target_link_libraries(SalekHypercore PRIVATE
   juce::juce_audio_basics
