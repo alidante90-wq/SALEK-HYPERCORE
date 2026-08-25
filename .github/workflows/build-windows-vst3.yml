@@ -47,7 +47,7 @@ jobs:
           }
 
           $standaloneFiles = Get-ChildItem -Path build -Recurse -Filter *.exe |
-            Where-Object { $_.FullName -like '*_artefacts*\\Release\\Standalone\\*' }
+            Where-Object { $_.FullName -match '[\\/]Standalone[\\/]SALEK HYPERCORE\.exe$' }
           if ($standaloneFiles.Count -eq 0) {
             Write-Host "ERROR: No Standalone executable found in build directory!"
             exit 1
