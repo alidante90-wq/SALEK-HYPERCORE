@@ -21,7 +21,7 @@ void HyperVoice::startNote(int note,float vel,juce::SynthesiserSound*,int) {
 
 void HyperVoice::stopNote(float,bool) { env.noteOff(); }
 
-void HyperVoice::renderNextBlock(juce::AudioBuffer<float>& out,const juce::MidiBuffer&,int start,int n) {
+void HyperVoice::renderNextBlock(juce::AudioBuffer<float>& out,int start,int n) {
  auto sr=getSampleRate(); if(sr<=0) return;
  float morph=p.getRawParameterValue("morph")->load();
  float mutation=p.getRawParameterValue("mutation")->load();
