@@ -21,6 +21,8 @@ juce_add_plugin(SalekHypercore
   FORMATS VST3
   PRODUCT_NAME "SALEK HYPERCORE"
   DESCRIPTION "Hybrid polyphonic synthesizer with chaos and mutation engines"
+  IS_SYNTH TRUE
+  VST3_CATEGORIES "Instrument|Synth"
 )
 
 juce_generate_juce_header(SalekHypercore)
