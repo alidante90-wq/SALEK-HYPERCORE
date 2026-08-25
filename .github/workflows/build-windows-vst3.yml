@@ -1,0 +1,71 @@
+name: Build SALEK HYPERCORE VST3 (Windows)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - 'Source/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/build-windows-vst3.yml'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install CMake
+        uses: kitware/cmake-action@v2
+        with:
+          cmake-version: 3.27.x
+
+      - name: Setup MSVC
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Configure CMake
+        run: |
+          cmake -B build `
+            -G "Visual Studio 17 2022" `
+            -A x64 `
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Release
+        run: |
+          cmake --build build --config Release --parallel
+
+      - name: Verify VST3 artifact
+        shell: pwsh
+        run: |
+          $vst3Files = Get-ChildItem -Path build -Recurse -Filter *.vst3
+          if ($vst3Files.Count -eq 0) {
+            Write-Host "ERROR: No .vst3 files found in build directory!"
+            Get-ChildItem -Path build -Recurse
+            exit 1
+          }
+          Write-Host "Found $($vst3Files.Count) VST3 file(s):"
+          foreach ($file in $vst3Files) {
+            Write-Host "  - $($file.FullName)"
+          }
+
+      - name: Package VST3
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist
+          Get-ChildItem -Path build -Recurse -Filter *.vst3 | ForEach-Object {
+            Copy-Item $_.FullName -Destination dist -Recurse -Force
+          }
+          Write-Host "Contents of dist:"
+          Get-ChildItem -Path dist -Recurse
+
+      - name: Upload VST3 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SALEK-HYPERCORE-Windows-VST3
+          path: dist
+          retention-days: 30
+          if-no-files-found: error
