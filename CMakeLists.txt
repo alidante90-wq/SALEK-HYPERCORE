@@ -23,6 +23,8 @@ juce_add_plugin(SalekHypercore
   DESCRIPTION "Hybrid polyphonic synthesizer with chaos and mutation engines"
 )
 
+juce_generate_juce_header(SalekHypercore)
+
 # Plugin sources
 target_sources(SalekHypercore PRIVATE
   Source/PluginProcessor.cpp
