@@ -18,7 +18,7 @@ juce_add_plugin(SalekHypercore
   COMPANY_NAME "SALEK"
   PLUGIN_MANUFACTURER_CODE "SALK"
   PLUGIN_CODE "HPRC"
-  FORMATS VST3
+  FORMATS VST3 Standalone
   PRODUCT_NAME "SALEK HYPERCORE"
   DESCRIPTION "Hybrid polyphonic synthesizer with chaos and mutation engines"
   IS_SYNTH TRUE

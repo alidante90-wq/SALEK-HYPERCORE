@@ -46,6 +46,17 @@ jobs:
             Write-Host "  - $($file.FullName)"
           }
 
+          $standaloneFiles = Get-ChildItem -Path build -Recurse -Filter *.exe |
+            Where-Object { $_.FullName -like '*_artefacts*\\Release\\Standalone\\*' }
+          if ($standaloneFiles.Count -eq 0) {
+            Write-Host "ERROR: No Standalone executable found in build directory!"
+            exit 1
+          }
+          Write-Host "Found Standalone executable(s):"
+          foreach ($file in $standaloneFiles) {
+            Write-Host "  - $($file.FullName)"
+          }
+
       - name: Package VST3
         shell: pwsh
         run: |
@@ -54,6 +65,10 @@ jobs:
             $destination = Join-Path "dist" $_.Name
             Copy-Item -LiteralPath $_.FullName -Destination $destination -Recurse -Force
           }
+          New-Item -ItemType Directory -Force -Path dist\Standalone
+          Get-ChildItem -Path build -Recurse -Filter *.exe |
+            Where-Object { $_.FullName -like '*_artefacts*\Release\Standalone\*' } |
+            Copy-Item -Destination dist\Standalone -Force
           Write-Host "Contents of dist:"
           Get-ChildItem -Path dist -Recurse
 
