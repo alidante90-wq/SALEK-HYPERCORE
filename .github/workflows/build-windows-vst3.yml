@@ -50,8 +50,9 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist
-          Get-ChildItem -Path build -Recurse -Filter *.vst3 | ForEach-Object {
-            Copy-Item $_.FullName -Destination dist -Recurse -Force
+          Get-ChildItem -Path build -Recurse -Directory -Filter *.vst3 | ForEach-Object {
+            $destination = Join-Path "dist" $_.Name
+            Copy-Item -LiteralPath $_.FullName -Destination $destination -Recurse -Force
           }
           Write-Host "Contents of dist:"
           Get-ChildItem -Path dist -Recurse

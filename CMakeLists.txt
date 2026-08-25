@@ -55,14 +55,3 @@ target_link_libraries(SalekHypercore PRIVATE
   juce::juce_gui_basics
   juce::juce_gui_extra
 )
-
-# Copy VST3 to dist folder (for packaging)
-if(MSVC)
-  add_custom_command(TARGET SalekHypercore POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/dist"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-      "$<TARGET_FILE_DIR:SalekHypercore>"
-      "${CMAKE_BINARY_DIR}/dist"
-    COMMENT "Copying VST3 to dist folder"
-  )
-endif()
